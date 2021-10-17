@@ -1,4 +1,5 @@
 import { Component } from "react";
+import Loader from "react-loader-spinner";
 import pixabayAPI from "../../services/pixabay-api";
 import ImageGalleryItem from "components/ImageGalleryItem";
 import s from "./ImageGallery.module.css";
@@ -58,7 +59,17 @@ class ImageGallery extends Component {
     }
 
     if (status === "pending") {
-      return <p>loading...</p>;
+      return (
+        <>
+          <Loader
+            className={s.center}
+            type="ThreeDots"
+            color="#3f51b5"
+            height={100}
+            width={100}
+          />
+        </>
+      );
     }
 
     if (status === "resolved") {
