@@ -1,5 +1,5 @@
 class fetchImages {
-  constructor(url = "https://pixabay.com/api") {
+  constructor(url = "https://pixabay.com/api/") {
     this.url = url;
     this._searchQuery = "";
     this._page = 1;
