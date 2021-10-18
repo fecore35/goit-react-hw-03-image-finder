@@ -23,6 +23,7 @@ class ImageGallery extends Component {
     error: null,
     isModalOpen: false,
     modalImage: null,
+    totalRemainingImages: 0,
   };
 
   async componentDidUpdate(prevProps) {
@@ -41,6 +42,7 @@ class ImageGallery extends Component {
         this.setState({
           images,
           status: images.length > 0 ? Status.RESOLVED : Status.EMPTY,
+          totalRemainingImages: API.totalImages > 12 ? API.totalImages - 12 : 0,
         });
       } catch (error) {
         this.setState({
@@ -53,9 +55,11 @@ class ImageGallery extends Component {
 
   onLoadMore = () => {
     API.page = 1;
+
     API.querySearch().then((nextImages) => {
       this.setState((prevState) => ({
         images: [...prevState.images, ...nextImages],
+        totalRemainingImages: prevState.totalRemainingImages - 12,
       }));
 
       window.scrollTo({
@@ -76,7 +80,7 @@ class ImageGallery extends Component {
 
   render() {
     const { images, status, error, isModalOpen, modalImage } = this.state;
-
+    console.log(API);
     if (status === "idle") {
       return <></>;
     }
@@ -111,7 +115,9 @@ class ImageGallery extends Component {
             <ImageGalleryItem images={images} onOpenModal={this.onOpenModal} />
           </ul>
 
-          {API.totalImages > 12 && <ButtonLoadMore onClick={this.onLoadMore} />}
+          {this.state.totalRemainingImages > 0 && (
+            <ButtonLoadMore onClick={this.onLoadMore} />
+          )}
 
           {isModalOpen && (
             <Modal onOpenModal={this.onOpenModal}>
