@@ -2,8 +2,10 @@ import { Component } from "react";
 import Loader from "react-loader-spinner";
 import pixabayAPI from "../../services/pixabay-api";
 import ImageGalleryItem from "components/ImageGalleryItem";
+import ButtonLoadMore from "components/Button";
 import s from "./ImageGallery.module.css";
 
+const API = new pixabayAPI();
 const Status = {
   IDLE: "idle",
   PENDING: "pending",
@@ -20,18 +22,19 @@ class ImageGallery extends Component {
   };
 
   async componentDidUpdate(prevProps) {
-    const prevSearchTerms = prevProps.querySearch;
-    const nextSearchTerms = this.props.querySearch;
+    const prevSearchTerms = prevProps.searchQuery;
+    const nextSearchTerms = this.props.searchQuery;
 
     if (prevSearchTerms !== nextSearchTerms) {
       this.setState({ status: Status.PENDING });
 
       try {
-        const data = await pixabayAPI(nextSearchTerms);
+        API.searchQuery = nextSearchTerms;
+        const images = await API.querySearch();
 
         this.setState({
-          images: data.hits,
-          status: data.total > 0 ? Status.RESOLVED : Status.EMPTY,
+          images,
+          status: images.length > 0 ? Status.RESOLVED : Status.EMPTY,
         });
       } catch (error) {
         this.setState({
@@ -40,6 +43,10 @@ class ImageGallery extends Component {
         });
       }
     }
+  }
+
+  onLoadMore() {
+    console.log("load more");
   }
 
   render() {
@@ -74,9 +81,13 @@ class ImageGallery extends Component {
 
     if (status === "resolved") {
       return (
-        <ul className={s.gallery}>
-          <ImageGalleryItem images={images} />
-        </ul>
+        <>
+          <ul className={s.gallery}>
+            <ImageGalleryItem images={images} />
+          </ul>
+
+          {API.totalImages > 12 && <ButtonLoadMore onClick={this.onLoadMore} />}
+        </>
       );
     }
 

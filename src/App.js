@@ -4,19 +4,19 @@ import ImageGallery from "./components/ImageGallery";
 
 class App extends Component {
   state = {
-    querySearch: null,
+    searchQuery: "",
   };
 
-  handlerQuerySearch = (querySearch) => {
-    this.setState({ querySearch });
+  handlerSearchQuery = (searchQuery) => {
+    this.setState({ searchQuery });
   };
 
   render() {
     return (
       <div className="App">
-        <Searchbar onSubmit={this.handlerQuerySearch} />
+        <Searchbar onSubmit={this.handlerSearchQuery} />
 
-        <ImageGallery querySearch={this.state.querySearch} />
+        <ImageGallery searchQuery={this.state.searchQuery} />
       </div>
     );
   }

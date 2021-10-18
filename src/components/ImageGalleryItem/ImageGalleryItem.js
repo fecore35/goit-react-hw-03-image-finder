@@ -5,7 +5,7 @@ class ImageGalleryItem extends Component {
   render() {
     return this.props.images.map(({ id, webformatURL, largeImageURL }) => {
       return (
-        <li key={id} className={s.item}>
+        <li key={id} id={id} className={s.item}>
           <img
             src={webformatURL}
             data-modal={largeImageURL}

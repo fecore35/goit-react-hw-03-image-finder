@@ -3,28 +3,28 @@ import s from "./Searchbar.module.css";
 
 class Searchbar extends Component {
   state = {
-    querySearch: "",
+    searchQuery: "",
   };
 
-  handlerQuerySearch = (event) => {
+  handlerSearchQuery = (event) => {
     this.setState({
-      querySearch: event.currentTarget.value,
+      searchQuery: event.currentTarget.value,
     });
   };
 
   handlerSubmit = (event) => {
     event.preventDefault();
 
-    if (this.state.querySearch.trim() === "") {
+    if (this.state.searchQuery.trim() === "") {
       return alert("Enter query search");
     }
 
-    this.props.onSubmit(this.state.querySearch);
-    this.setState({ querySearch: "" });
+    this.props.onSubmit(this.state.searchQuery);
+    this.setState({ searchQuery: "" });
   };
 
   render() {
-    const { querySearch } = this.state;
+    const { searchQuery } = this.state;
 
     return (
       <header className={s.header}>
@@ -39,8 +39,8 @@ class Searchbar extends Component {
             autoComplete="off"
             autoFocus
             placeholder="Search images and photos"
-            value={querySearch}
-            onChange={this.handlerQuerySearch}
+            value={searchQuery}
+            onChange={this.handlerSearchQuery}
           />
         </form>
       </header>

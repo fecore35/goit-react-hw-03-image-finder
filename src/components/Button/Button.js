@@ -3,7 +3,11 @@ import s from "./Button.module.css";
 
 class Button extends Component {
   render() {
-    return <button className={s.button}>Load more</button>;
+    return (
+      <button className={s.button} onClick={this.props.onClick}>
+        Load more
+      </button>
+    );
   }
 }
 
