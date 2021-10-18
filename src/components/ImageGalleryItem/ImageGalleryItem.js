@@ -6,12 +6,14 @@ class ImageGalleryItem extends Component {
     return this.props.images.map(({ id, webformatURL, largeImageURL }) => {
       return (
         <li key={id} id={id} className={s.item}>
-          <img
-            src={webformatURL}
-            data-modal={largeImageURL}
-            alt=""
-            className={s.image}
-          />
+          <a href={largeImageURL} onClick={this.props.onOpenModal}>
+            <img
+              src={webformatURL}
+              data-modal={largeImageURL}
+              alt=""
+              className={s.image}
+            />
+          </a>
         </li>
       );
     });

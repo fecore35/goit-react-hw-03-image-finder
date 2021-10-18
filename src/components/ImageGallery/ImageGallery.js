@@ -3,6 +3,7 @@ import Loader from "react-loader-spinner";
 import pixabayAPI from "../../services/pixabay-api";
 import ImageGalleryItem from "components/ImageGalleryItem";
 import ButtonLoadMore from "components/Button";
+import Modal from "components/Modal";
 import s from "./ImageGallery.module.css";
 
 const API = new pixabayAPI();
@@ -19,6 +20,8 @@ class ImageGallery extends Component {
     images: [],
     status: Status.IDLE,
     error: null,
+    isModalOpen: false,
+    modalImage: null,
   };
 
   async componentDidUpdate(prevProps) {
@@ -61,8 +64,17 @@ class ImageGallery extends Component {
     });
   };
 
+  onOpenModal = (event) => {
+    event.preventDefault();
+    const modalImage = event.currentTarget.href;
+
+    this.setState((prevState) => {
+      return { isModalOpen: !prevState.isModalOpen, modalImage };
+    });
+  };
+
   render() {
-    const { images, status, error } = this.state;
+    const { images, status, error, isModalOpen, modalImage } = this.state;
 
     if (status === "idle") {
       return <></>;
@@ -95,10 +107,16 @@ class ImageGallery extends Component {
       return (
         <>
           <ul className={s.gallery} id="gallery-images">
-            <ImageGalleryItem images={images} />
+            <ImageGalleryItem images={images} onOpenModal={this.onOpenModal} />
           </ul>
 
           {API.totalImages > 12 && <ButtonLoadMore onClick={this.onLoadMore} />}
+
+          {isModalOpen && (
+            <Modal onOpenModal={this.onOpenModal}>
+              <img src={modalImage} />
+            </Modal>
+          )}
         </>
       );
     }
