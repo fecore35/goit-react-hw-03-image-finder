@@ -23,6 +23,10 @@ class fetchImages {
     return (this._page += value);
   }
 
+  resetPage() {
+    return (this._page = 1);
+  }
+
   get totalImages() {
     return this._totalImages;
   }

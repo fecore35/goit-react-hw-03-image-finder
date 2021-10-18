@@ -30,6 +30,8 @@ class ImageGallery extends Component {
 
       try {
         API.searchQuery = nextSearchTerms;
+        API.resetPage();
+
         const images = await API.querySearch();
 
         this.setState({
@@ -45,9 +47,19 @@ class ImageGallery extends Component {
     }
   }
 
-  onLoadMore() {
-    console.log("load more");
-  }
+  onLoadMore = () => {
+    API.page = 1;
+    API.querySearch().then((nextImages) => {
+      this.setState((prevState) => ({
+        images: [...prevState.images, ...nextImages],
+      }));
+
+      window.scrollTo({
+        top: document.getElementById("gallery-images").scrollHeight,
+        behavior: "smooth",
+      });
+    });
+  };
 
   render() {
     const { images, status, error } = this.state;
@@ -82,7 +94,7 @@ class ImageGallery extends Component {
     if (status === "resolved") {
       return (
         <>
-          <ul className={s.gallery}>
+          <ul className={s.gallery} id="gallery-images">
             <ImageGalleryItem images={images} />
           </ul>
 
