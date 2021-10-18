@@ -1,4 +1,5 @@
 import { Component } from "react";
+import PropTypes from "prop-types";
 import Loader from "react-loader-spinner";
 import pixabayAPI from "../../services/pixabay-api";
 import ImageGalleryItem from "components/ImageGalleryItem";
@@ -126,5 +127,9 @@ class ImageGallery extends Component {
     }
   }
 }
+
+ImageGallery.propTypes = {
+  searchQuery: PropTypes.string,
+};
 
 export default ImageGallery;
