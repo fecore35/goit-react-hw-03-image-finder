@@ -80,7 +80,7 @@ class ImageGallery extends Component {
 
   render() {
     const { images, status, error, isModalOpen, modalImage } = this.state;
-    console.log(API);
+
     if (status === "idle") {
       return <></>;
     }
@@ -121,7 +121,7 @@ class ImageGallery extends Component {
 
           {isModalOpen && (
             <Modal onOpenModal={this.onOpenModal}>
-              <img src={modalImage} />
+              <img src={modalImage} alt="" />
             </Modal>
           )}
         </>
